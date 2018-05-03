@@ -1,5 +1,10 @@
 # Solution to the archived problems of Project Euler
 
+# Libraries imported
+from math import sqrt
+import fractions
+
+
 # Problem 1 : Multiples of 3 and 5 
 # If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
 # Find the sum of all the multiples of 3 or 5 below 1000.
@@ -43,3 +48,108 @@ def even_fibonacci(arr):
 
 print ("Solution to Problem 2 is {} ".format(even_fibonacci([1,2])))
 
+# Problem 3: Largest Prime Factor
+# The prime factors of 13195 are 5, 7, 13 and 29.
+# What is the largest prime factor of the number 600851475143 ?
+
+def prime_factor(num):
+	factors = []
+	if num % 2 == 0:
+		factors.append(2)
+
+	for i in range(3, int(sqrt(num))):
+		flg = 0
+		if num % i == 0:
+			for prime in factors:
+				if i % prime == 0:
+					flg = 1 
+			
+			if flg == 0:
+				factors.append(i)
+		i += 2
+
+	return max(factors)
+
+
+print ("Solution to Problem 3 is {} ".format(prime_factor(600851475143)))
+
+# Problem 4: Largest Palinrome Product
+# A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+# Find the largest palindrome made from the product of two 3-digit numbers.
+
+def largest_palindrome(n):
+	upper_limit = 0
+	for i in range(0, n):
+		upper_limit *= 10
+		upper_limit += 9
+
+	lower_limit = 1 + upper_limit//10
+	
+	max_product = 0
+	for i in range(upper_limit, lower_limit-1, -1):
+		for j in range(i, lower_limit-1, -1):
+			product = i*j
+			if product < max_product:
+				break
+
+			number = product
+			reverse = 0
+
+			while number != 0:
+				reverse = number % 10 + reverse*10
+				number = number//10
+
+			if reverse == product and product > max_product:
+				max_product = product
+				
+	return max_product				
+
+
+print ("Solution to Problem 4 is {}".format(largest_palindrome(3)))
+
+
+# Problem 5: Smallest Multiple
+# 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+# What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+
+def smallest_multiple(nums, technique):
+	if technique == "normal":
+		multiple = 2
+		while True:
+			multiple += 1
+			for x in nums:
+				if multiple % x != 0:
+					break
+				else:
+					multiple *= x
+					if x == max(nums):
+						return multiple
+	elif technique == "gcd":
+		multiple = 2
+		for i in nums:
+			multiple = (multiple*i)/fractions.gcd(multiple, i)
+
+		return int(multiple)
+
+
+print ("Solution to Problem 5 is {}".format(smallest_multiple(list(range(2,21)), "gcd")))
+
+
+# Problem 6: Sum square difference
+# The sum of the squares of the first ten natural numbers is,
+# 12 + 22 + ... + 102 = 385
+# The square of the sum of the first ten natural numbers is,
+# (1 + 2 + ... + 10)2 = 552 = 3025
+# Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.
+# Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+
+def sum_sq_diff(nums):
+	sum_sq = sq_sum = 0
+	for i in nums:
+		sum_sq += i**2
+		sq_sum += i
+
+	return (sq_sum**2 - sum_sq)
+
+
+print ("Solution to Problem 6 is {}".format(sum_sq_diff(list(range(1,101)))))
