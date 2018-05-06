@@ -525,3 +525,58 @@ def collatz_num(n):
 p += 1
 result, total_time = collatz_num(1000000)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 15: Lattice Paths
+# Starting in the top left corner of a 2×2 grid, and only being able to move to the right and down, there are exactly 6 routes to the bottom right corner.
+# How many such routes are there through a 20×20 grid?
+
+def lattice_paths(m, n):
+	start = time.time()
+	count = [[0 for i in range(m)] for j in range(n)]
+
+	# first horizontal and first vertical lines have value 1
+	for i in range(m):
+		count[i][0] = 1
+
+	for j in range(n):
+		count[0][j] = 1
+
+	for i in range(1, m):
+		for j in range(1, n):
+			count[i][j] = count[i-1][j] + count[i][j-1]
+
+	return count[m-1][n-1], time.time() - start
+
+p += 1
+result, total_time = lattice_paths(21, 21)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 16: Power digit sum
+# 2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
+# What is the sum of the digits of the number 2^1000?
+
+def power_digit_sum(x, y):
+	start = time.time()
+	def power(x, y):
+		if y == 0:
+			return 1
+		temp = power(x, int(y/2))
+		
+		if y % 2 == 0:
+			return temp*temp
+		else:
+			if (y > 0):
+				return x*temp*temp
+			else:
+				return temp*temp / x
+
+	power_val = str(power(x, y))
+	sum1 = 0
+	for i in power_val:
+		sum1 += int(i)
+
+	return sum1, time.time() - start
+
+p += 1
+result, total_time = power_digit_sum(2, 1000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
