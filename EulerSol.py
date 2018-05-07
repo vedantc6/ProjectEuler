@@ -521,9 +521,8 @@ def collatz_num(n):
 	# print (max_chain)
 	return max_chain[0], time.time() - start
 
-
 p += 1
-result, total_time = collatz_num(1000000)
+result, total_time = collatz_num(13)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
 
 # Problem 15: Lattice Paths
