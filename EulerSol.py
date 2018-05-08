@@ -499,31 +499,31 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.
 # Which starting number, under one million, produces the longest chain?
 
-def collatz_num(n):
-	start = time.time()
-	i = n
-	max_chain = []
+# def collatz_num(n):
+# 	start = time.time()
+# 	i = n
+# 	max_chain = []
 	
-	for i in range(1, n):
-		chain = [i]
-		while i != 1:
-			if i % 2 == 0:
-				i /= 2
-			else:
-				i = 3*i + 1
-			chain.append(i)
-			if i == 1:
-				break
+# 	for i in range(1, n):
+# 		chain = [i]
+# 		while i != 1:
+# 			if i % 2 == 0:
+# 				i /= 2
+# 			else:
+# 				i = 3*i + 1
+# 			chain.append(i)
+# 			if i == 1:
+# 				break
 
-		if len(chain) > len(max_chain):
-			max_chain = chain
+# 		if len(chain) > len(max_chain):
+# 			max_chain = chain
 
-	# print (max_chain)
-	return max_chain[0], time.time() - start
+# 	# print (max_chain)
+# 	return max_chain[0], time.time() - start
 
-p += 1
-result, total_time = collatz_num(13)
-print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+# p += 1
+# result, total_time = collatz_num(13)
+# print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
 
 # Problem 15: Lattice Paths
 # Starting in the top left corner of a 2×2 grid, and only being able to move to the right and down, there are exactly 6 routes to the bottom right corner.
@@ -578,4 +578,70 @@ def power_digit_sum(x, y):
 
 p += 1
 result, total_time = power_digit_sum(2, 1000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 17: Number letter counts
+# If the numbers 1 to 5 are written out in words: one, two, three, four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.
+# If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?
+
+def num_to_letter(num_range):
+	start = time.time()
+	num_to_dict = {
+					1 : "one",
+					2 : "two",
+					3 : "three",
+					4 : "four",
+					5 : "five",
+					6 : "six",
+					7 : "seven",
+					8 : "eight",
+					9 : "nine",
+					10 : "ten",
+					11 : "eleven",
+					12 : "twelve",
+					13 : "thirteen",
+					14 : "fourteen",
+					15 : "fifteen",
+					16 : "sixteen",
+					17 : "seventeen",
+					18 : "eighteen",
+					19 : "nineteen",
+					20 : "twenty",
+					30 : "thirty",
+					40 : "fourty",
+					50 : "fifty",
+					60 : "sixty",
+					70 : "seventy",
+					80 : "eighty",
+					90 : "ninety"
+	}
+
+	number_txt = ''
+
+	for num in range(1,num_range+1):
+		if (num > 20 and num < 100) and num not in num_to_dict:
+			number_txt += num_to_dict[num//10] + num_to_dict[num%10]
+		
+		elif (num >= 100 and num < 1000) and num not in num_to_dict:
+			if num % 100 == 0:
+				number_txt += num_to_dict[num//100] + "hundred"
+			else:
+				hundreds = num // 100
+				num = num - hundreds*100
+				if num not in num_to_dict:
+					number_txt += num_to_dict[hundreds] + "hundredand" + num_to_dict[num//10] + num_to_dict[num%10]
+				else:
+					number_txt += num_to_dict[hundreds] + "hundredand" + num_to_dict[num]
+		
+		elif num in num_to_dict:
+			number_txt += num_to_dict[num]
+
+		elif num == 1000:
+			number_txt += "onethousand"
+
+	return len(number_txt), time.time() - start
+
+
+p += 1
+result, total_time = num_to_letter(1000)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
