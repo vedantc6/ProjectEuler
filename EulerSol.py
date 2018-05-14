@@ -521,7 +521,7 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # 	# print (max_chain)
 # 	return max_chain[0], time.time() - start
 
-# p += 1
+p += 1
 # result, total_time = collatz_num(13)
 # print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
 
@@ -644,4 +644,68 @@ def num_to_letter(num_range):
 
 p += 1
 result, total_time = num_to_letter(1000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 18: Maximum path sum I
+# By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.
+# 3
+# 7 4
+# 2 4 6
+# 8 5 9 3
+# That is, 3 + 7 + 4 + 9 = 23.
+# Find the maximum total from top to bottom of the triangle below:
+
+def max_path_sum(arr, m, n):
+	for i in range(m-1, -1, -1):
+		for j in range(i+1):
+			if arr[i+1][j] > arr[i+1][j+1]:
+				arr[i][j] += arr[i+1][j]
+			else:
+				arr[i][j] += arr[i+1][j+1] 
+	
+	return arr[0][0]
+
+def make2dList(rows, cols):
+    a = []
+    for row in range(rows): 
+    	a += [[0]*cols]
+    
+    return a
+
+def max_path_sum_wrapper(triangle):
+	start = time.time()
+	max_length = 0
+	for i in range(len(triangle)):
+		length = len(triangle[i])
+		if length > max_length:
+			max_length = length
+
+	new_list = make2dList(len(triangle), max_length)
+
+	for i in range(len(triangle)):
+		for j in range(len(triangle[i])):
+			new_list[i][j] = triangle[i][j]
+		
+	total_sum = max_path_sum(new_list, len(new_list) - 1, max_length - 1)
+	return total_sum, time.time() - start
+
+triangle = [[75],
+			[95, 64],
+			[17, 47, 82],
+			[18, 35, 87, 10],
+			[20, 4, 82, 47, 65],
+			[19, 1, 23, 75, 3, 34],
+			[88, 2, 77, 73, 7, 63, 67],
+			[99, 65, 4, 28, 6, 16, 70, 92],
+			[41, 41, 26, 56, 83, 40, 80, 70, 33],
+			[41, 48, 72, 33, 47, 32, 37, 16, 94, 29],
+			[53, 71, 44, 65, 25, 43, 91, 52, 97, 51, 14],
+			[70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57],
+			[91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48],
+			[63, 66, 4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31],
+			[4, 62, 98, 27, 23, 9, 70, 98, 73, 93, 38, 53, 60, 4, 23]
+			]
+
+p += 1
+result, total_time = max_path_sum_wrapper(triangle)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
