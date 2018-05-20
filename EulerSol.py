@@ -4,6 +4,7 @@
 from math import sqrt, ceil
 import fractions
 import time
+import datetime
 
 # Problem 1 : Multiples of 3 and 5 
 # If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
@@ -655,6 +656,13 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # That is, 3 + 7 + 4 + 9 = 23.
 # Find the maximum total from top to bottom of the triangle below:
 
+def make2dList(rows, cols):
+    a = []
+    for row in range(rows): 
+    	a += [[0]*cols]
+    
+    return a
+
 def max_path_sum(arr, m, n):
 	for i in range(m-1, -1, -1):
 		for j in range(i+1):
@@ -664,13 +672,6 @@ def max_path_sum(arr, m, n):
 				arr[i][j] += arr[i+1][j+1] 
 	
 	return arr[0][0]
-
-def make2dList(rows, cols):
-    a = []
-    for row in range(rows): 
-    	a += [[0]*cols]
-    
-    return a
 
 def max_path_sum_wrapper(triangle):
 	start = time.time()
@@ -708,4 +709,39 @@ triangle = [[75],
 
 p += 1
 result, total_time = max_path_sum_wrapper(triangle)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 19: Counting Sundays
+# You are given the following information, but you may prefer to do some research for yourself.
+# 1 Jan 1900 was a Monday.
+# Thirty days has September,
+# April, June and November.
+# All the rest have thirty-one,
+# Saving February alone,
+# Which has twenty-eight, rain or shine.
+# And on leap years, twenty-nine.
+# A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.
+# How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?
+
+def count_sundays(start_year, end_year):
+	start = time.time()
+	# start date is 1st Jan, 1901, which was a Tuesday
+	counts = 0
+	month = 1
+	cur_date = datetime.date(start_year, month, 1)
+
+	while int(cur_date.strftime("%Y")) < 2001:
+		if int(cur_date.strftime("%w")) == 0:
+			counts += 1
+		if month + 1 == 13:
+			month = 1
+			start_year += 1
+		else:
+			month += 1
+		cur_date = datetime.date(start_year, month, 1)
+
+	return counts, time.time() - start
+
+p += 1
+result, total_time = count_sundays(1901, 2001)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
