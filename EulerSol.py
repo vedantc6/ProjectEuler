@@ -730,7 +730,7 @@ def count_sundays(start_year, end_year):
 	month = 1
 	cur_date = datetime.date(start_year, month, 1)
 
-	while int(cur_date.strftime("%Y")) < 2001:
+	while int(cur_date.strftime("%Y")) < end_year:
 		if int(cur_date.strftime("%w")) == 0:
 			counts += 1
 		if month + 1 == 13:
@@ -744,4 +744,74 @@ def count_sundays(start_year, end_year):
 
 p += 1
 result, total_time = count_sundays(1901, 2001)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 20: Factorial digit sum
+# n! means n × (n − 1) × ... × 3 × 2 × 1
+# For example, 10! = 10 × 9 × ... × 3 × 2 × 1 = 3628800,
+# and the sum of the digits in the number 10! is 3 + 6 + 2 + 8 + 8 + 0 + 0 = 27.
+# Find the sum of the digits in the number 100!
+
+def fact_sum(n):
+	start = time.time()
+	i = n
+	mul = 1
+	total_sum = 0
+
+	while i > 0:
+		mul *= i
+		i -= 1
+
+	for digit in str(mul):
+		total_sum += int(digit)
+
+	return total_sum, time.time() - start
+
+p += 1
+result, total_time = fact_sum(100)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 21: Amicable numbers
+# Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
+# If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
+# For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.
+# Evaluate the sum of all the amicable numbers under 10000.
+
+def sum_proper_div(num):
+	div_sum = 0
+	for i in range(1, num//2 + 1):
+		if num % i == 0:
+			div_sum += i
+	
+	return div_sum
+
+def amicable_num(n):
+	start = time.time()
+	answer = 0
+	for x in range(4, n):
+		if sum_proper_div(x) > 4:
+			if sum_proper_div(sum_proper_div(x)) == x and sum_proper_div(x) !=x:
+				answer += x
+				# print(x, "and", sum_proper_div(x))
+
+	return answer, time.time() - start
+
+p += 1
+result, total_time = amicable_num(10000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 22: Names scores
+# Using names.txt (right click and 'Save Link/Target As...'), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.
+# For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.
+# What is the total of all the name scores in the file?
+
+def names_scores(text):
+	start = time.time()
+	with open(text, "r") as f:
+		print(f.read())
+
+	return 1, time.time() - start
+
+p += 1
+result, total_time = names_scores("p022_names.txt")
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
