@@ -805,12 +805,26 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.
 # What is the total of all the name scores in the file?
 
+def score(txt):
+	score = 0
+	alphabet = ["A", "B", "C", "D", "E", "F", "G", "H",
+    "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+    "T", "U", "V", "W", "X", "Y", "Z"]
+	for i in txt:
+		score += alphabet.index(i) + 1
+	return score
+
 def names_scores(text):
 	start = time.time()
 	with open(text, "r") as f:
-		print(f.read())
+		text_list = f.read().replace("\"", '').split(",")
 
-	return 1, time.time() - start
+	sum1 = 0
+	text_list = sorted(text_list)
+	for txt in text_list:
+		sum1 = sum1 + (score(txt)*(text_list.index(txt) + 1))
+	
+	return sum1, time.time() - start
 
 p += 1
 result, total_time = names_scores("p022_names.txt")
