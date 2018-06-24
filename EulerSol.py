@@ -837,42 +837,42 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit.
 # Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 
-def divisors(num):
-	div_sum = 0
-	for i in range(1, (num // 2) + 1):
-		if num % i == 0:
-			div_sum += i
-	return div_sum
+# def divisors(num):
+# 	div_sum = 0
+# 	for i in range(1, (num // 2) + 1):
+# 		if num % i == 0:
+# 			div_sum += i
+# 	return div_sum
 
-def abundant_nums(limit):
-    abundant = []
-    for i in range(1, limit):
-        if divisors(i) > i:
-            abundant.append(i)
+# def abundant_nums(limit):
+#     abundant = []
+#     for i in range(1, limit):
+#         if divisors(i) > i:
+#             abundant.append(i)
 
-    return abundant
+#     return abundant
 
-def non_abundant(limit):
-	start = time.time()
-	abundant = abundant_nums(limit + 1)
-	sums = [0]*(limit+1)
-	non_abundant = 0
-	for x in range(len(abundant)):
-		for y in range(x, len(abundant)):
-			sumOfabundant = abundant[x] + abundant[y]
-			if sumOfabundant <= limit:
-				if sums[sumOfabundant] == 0:
-					sums[sumOfabundant] = sumOfabundant
+# def non_abundant(limit):
+# 	start = time.time()
+# 	abundant = abundant_nums(limit + 1)
+# 	sums = [0]*(limit+1)
+# 	non_abundant = 0
+# 	for x in range(len(abundant)):
+# 		for y in range(x, len(abundant)):
+# 			sumOfabundant = abundant[x] + abundant[y]
+# 			if sumOfabundant <= limit:
+# 				if sums[sumOfabundant] == 0:
+# 					sums[sumOfabundant] = sumOfabundant
 
-	for i in range(1, len(sums)):
-		if sums[i] == 0:
-			non_abundant += i
+# 	for i in range(1, len(sums)):
+# 		if sums[i] == 0:
+# 			non_abundant += i
 
-	return non_abundant, time.time() - start
+# 	return non_abundant, time.time() - start
  
 p += 1
-result, total_time = non_abundant(28123)
-print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+# result, total_time = non_abundant(28123)
+# print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
 
 # Problem 24: Lexicographic permutations
 # A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:
@@ -909,17 +909,111 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
 
 def fibonacci():
-	start = time.time()
+	starts = time.time()
 	series = [0, 1, 1]
 	start = 3
 	end = 5000
 	for i in range(start, end):
 		series.append(series[i-1] + series[i-2])
 		if len(str(series[i])) >= 1000:
-			return i, time.time() - start
+			return i, time.time() - starts
 		else:
 			continue
 
 p += 1
-result, total_time = fibonacci()
+result, total_times = fibonacci()
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_times))
+
+# Problem 26: Reciprocal cycles
+# A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:
+# 1/2	= 	0.5
+# 1/3	= 	0.(3)
+# 1/4	= 	0.25
+# 1/5	= 	0.2
+# 1/6	= 	0.1(6)
+# 1/7	= 	0.(142857)
+# 1/8	= 	0.125
+# 1/9	= 	0.(1)
+# 1/10	= 	0.1
+# Where 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.
+# Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.
+
+# def prime_sieve(n):
+# 	prime = [True for i in range(n+1)]
+# 	p = 2
+# 	while (p*p <= n):
+# 		if (prime[p] == True):
+# 			for i in range(p*2, n+1, p):
+# 				prime[i] = False
+# 		p += 1
+	
+# 	prime_nums = []
+# 	for p in range(2, n):
+# 		if prime[p]:
+# 			prime_nums.append(p)
+# 	return prime_nums
+def prime_sieve(n):
+    sieve = [True] * (n//2)
+    for i in range(3,int(n**0.5)+1,2):
+        if sieve[i//2]:
+            sieve[i*i//2::i] = [False] * ((n-i*i-1)//(2*i)+1)
+    return [2] + [2*i+1 for i in range(1,n//2) if sieve[i]]
+
+def reciprocal_cylces(num):
+	start = time.time()
+	if num < 8:
+		return 3, time.time() - start
+
+	for d in prime_sieve(num)[::-1]:
+		period = 1
+		while pow(10, period, d) != 1:
+			period += 1
+		if (d - 1) == period:
+			return d, time.time() - start
+	return 0
+
+p += 1
+result, total_time = reciprocal_cylces(1000)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 27: Quadratic primes
+# Euler discovered the remarkable quadratic formula:
+# n2+n+41
+# It turns out that the formula will produce 40 primes for the consecutive integer values 0≤n≤39. However, when n=40,402+40+41=40(40+1)+41 is divisible by 41, and certainly when n=41,412+41+41 is clearly divisible by 41.
+# The incredible formula n2−79n+1601 was discovered, which produces 80 primes for the consecutive values 0≤n≤79. The product of the coefficients, −79 and 1601, is −126479.
+# Considering quadratics of the form:
+# n2+an+b, where |a|<1000 and |b|≤1000
+# where |n| is the modulus/absolute value of n
+# e.g. |11|=11 and |−4|=4
+# Find the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n=0.
+
+def is_prime(n):
+	if n < 2: return 0
+	elif n == 2: return 1
+	elif n % 2 == 0: return 0
+	else:
+		for x in range(3, int(sqrt(n) + 1), 2):
+			if n % x == 0: 
+				return 0
+	return 1
+
+def quad_primes(n):
+	start = time.time()
+	primes = prime_sieve(n)
+	longest = 0
+	for b in primes:
+		for a in range(-999, 1000, 2):
+			image = b
+			n = 0
+			while is_prime(image):
+				n += 1
+				image = n**2 + a*n + b
+			if n > longest:
+				longest = n
+				result = a*b
+	return result, time.time() - start
+	
+p += 1
+result, total_time = quad_primes(1000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
