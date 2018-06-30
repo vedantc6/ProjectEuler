@@ -1100,8 +1100,31 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 # How many different ways can £2 be made using any number of coins?
 
 def coin_sums(n):
-	
+	start = time.time()
+	coins = [1, 2, 5, 10, 20, 50, 100, 200]
+	combinations = [0]*201
+	combinations[0] = 1
+	for c in coins:
+		for i in range(1, len(combinations)):
+			if i>=c:
+				combinations[i] += combinations[i-c]
+
+	return combinations[-1], time.time() - start
 
 p += 1
-result, total_time = coin_sums(2)
+result, total_time = coin_sums(200)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 32: Pandigital products
+# We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.
+# The product 7254 is unusual, as the identity, 39 × 186 = 7254, containing multiplicand, multiplier, and product is 1 through 9 pandigital.
+# Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.
+# HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.
+
+def pandigital_prod():
+	start = time.time()
+	return 1, time.time() - start
+
+p += 1
+result, total_time = pandigital_prod()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
