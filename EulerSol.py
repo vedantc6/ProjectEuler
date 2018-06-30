@@ -1123,8 +1123,52 @@ print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result
 
 def pandigital_prod():
 	start = time.time()
-	return 1, time.time() - start
+	products = set()
+	to_be_checked = set('123456789')
+
+	# for single digit multiplication
+	for i in range(1,10):
+		for j in range(1000, 10000):
+			s = str(i) + str(j) + str(i*j)
+			if len(s) == 9 and set(s) == to_be_checked:
+				products.add(i*j)
+			elif len(s) > 9:
+				break
+
+	# for double digit multiplication
+	for i in range(10,100):
+		for j in range(100,1000):
+			s = str(i) + str(j) + str(i*j)
+			if len(s) == 9 and set(s) == to_be_checked:
+				products.add(i*j)
+			elif len(s) > 9:
+				break
+
+	return sum(products), time.time() - start
 
 p += 1
 result, total_time = pandigital_prod()
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 22: Digit cancelling fractions
+# The fraction 49/98 is a curious fraction, as an inexperienced mathematician in attempting to simplify it may incorrectly believe that 49/98 = 4/8, which is correct, is obtained by cancelling the 9s.
+# We shall consider fractions like, 30/50 = 3/5, to be trivial examples.
+# There are exactly four non-trivial examples of this type of fraction, less than one in value, and containing two digits in the numerator and denominator.
+# If the product of these four fractions is given in its lowest common terms, find the value of the denominator.
+
+def digit_cancel():
+	start = time.time()
+	numprod = 1
+	denprod = 1
+	for i in range(1, 10):
+		for den in range(1, i):
+			for num in range(1, den):
+				if ((num*10 + i)*den == num*(i*10 + den)):
+					denprod *= den
+					numprod *= num
+	denprod /= fractions.gcd(numprod, denprod) 
+	return denprod, time.time() - start
+
+p += 1
+result, total_time = digit_cancel()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
