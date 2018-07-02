@@ -1172,3 +1172,81 @@ def digit_cancel():
 p += 1
 result, total_time = digit_cancel()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 34: Digit factorials
+# 145 is a curious number, as 1! + 4! + 5! = 1 + 24 + 120 = 145.
+# Find the sum of all numbers which are equal to the sum of the factorial of their digits.
+# Note: as 1! = 1 and 2! = 2 are not sums they are not included.
+
+def digit_fact(limit):
+	start = time.time()
+	d = {0: 1,
+		1: 1, 
+		2: 2,
+		3: 6,
+		4: 24,
+		5: 120,
+		6: 720,
+		7: 5040,
+		8: 40320,
+		9: 362880}
+
+	total = 0
+
+	for i in range(3, limit):
+		sums = 0
+		n = i
+		while n !=0 :
+			digit = n%10
+			n = n//10
+			sums += d[digit]
+		if sums == i:
+			# print(i)
+			total += sums
+
+	return total, time.time() - start
+
+p += 1
+result, total_time = digit_fact(50001)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 35: Circular primes
+# The number, 197, is called a circular prime because all rotations of the digits: 197, 971, and 719, are themselves prime.
+# There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, and 97.
+# How many circular primes are there below one million?
+
+def sieve_of_eratosthenes(n):
+	prime = [True for i in range(n+1)]
+	p = 2
+	prime[0] = prime[1] = False
+	while (p*p <=n):
+		if prime[p] == True:
+			for i in range(p*2, n+1, p):
+				prime[i] = False
+		p += 1
+
+	return prime
+
+def circular_primes(n):
+	start = time.time()
+	l = []
+	prime_list = sieve_of_eratosthenes(n)
+	for i in range(2, n):
+		num = i
+		flag = 1
+		while num!= 0:
+			digit = num%10
+			num = num//10
+			if digit == 0: 
+				flag = 0
+				break
+			if prime_list[digit] == False:
+				flag = 0
+		if flag == 1:
+			l.append(i)
+	print (l)
+	return 1, time.time() - start
+
+p += 1
+result, total_time = circular_primes(100)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
