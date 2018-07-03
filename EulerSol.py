@@ -1232,21 +1232,80 @@ def circular_primes(n):
 	l = []
 	prime_list = sieve_of_eratosthenes(n)
 	for i in range(2, n):
-		num = i
-		flag = 1
-		while num!= 0:
-			digit = num%10
-			num = num//10
-			if digit == 0: 
-				flag = 0
-				break
-			if prime_list[digit] == False:
-				flag = 0
-		if flag == 1:
-			l.append(i)
-	print (l)
-	return 1, time.time() - start
+		if prime_list[i]:
+			flag = 1
+			str_n = str(i)
+			for j in range(0, len(str_n)-1):
+				temp = str_n[0]
+				str_n = str_n[1:]
+				str_n += temp
+				if prime_list[int(str_n)] == False:
+					flag = 0
+			if flag:
+				l.append(i)		
+	return len(l), time.time() - start
 
 p += 1
-result, total_time = circular_primes(100)
+result, total_time = circular_primes(1000000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 36: Double-base palindromes
+# The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.
+# Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.
+# (Please note that the palindromic number, in either base, may not include leading zeros.)
+
+def convert_to_base(num, base):
+	str1 = ''
+	while (num > 0):
+		dig = num % base
+		num = num // base
+		str1 += str(dig)
+
+	return str1
+
+def reverse(num):
+	rev = 0
+	while (num > 0):
+		dig = num % 10
+		rev = rev*10 + dig
+		num = num // 10
+
+	return rev
+
+def twobase_palind(n):
+	start = time.time()
+	total = 0
+	for i in range(1, n, 2):
+		temp = i
+		rev = reverse(temp)
+
+		if rev == i:
+			binary = convert_to_base(i, 2)
+			rev_bin = binary[::-1]
+			if rev_bin == binary:
+				total += i
+
+	return total, time.time() - start
+
+p += 1
+result, total_time = twobase_palind(1000000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 37: Truncatable primes
+# The number 3797 has an interesting property. Being prime itself, it is possible to continuously remove digits from left to right, and remain prime at each stage: 3797, 797, 97, and 7. Similarly we can work from right to left: 3797, 379, 37, and 3.
+# Find the sum of the only eleven primes that are both truncatable from left to right and right to left.
+# NOTE: 2, 3, 5, and 7 are not considered to be truncatable primes.
+
+def trunc_prime(n):
+	start = time.time()
+	prime_list = sieve_of_eratosthenes(n)
+	total = 0
+	for i in range(10, n):
+		str_num = i
+
+	return total, time.time() - start
+
+
+p += 1
+result, total_time = trunc_prime(3798)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
