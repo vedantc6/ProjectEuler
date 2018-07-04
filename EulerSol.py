@@ -1329,13 +1329,12 @@ def trunc_prime(n):
 		return True	
 	
 	numbers = 0
-	i = 8
+	i = 11
 
 	while numbers < 11:
 		if trunc(i):
 			total += i
 			numbers += 1
-			print(i)
 		i += 1
 
 	return total, time.time() - start
@@ -1343,4 +1342,98 @@ def trunc_prime(n):
 
 p += 1
 result, total_time = trunc_prime(1000000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 38: Pandigital multiples
+# Take the number 192 and multiply it by each of 1, 2, and 3:
+# 192 × 1 = 192
+# 192 × 2 = 384
+# 192 × 3 = 576
+# By concatenating each product we get the 1 to 9 pandigital, 192384576. We will call 192384576 the concatenated product of 192 and (1,2,3)
+# The same can be achieved by starting with 9 and multiplying by 1, 2, 3, 4, and 5, giving the pandigital, 918273645, which is the concatenated product of 9 and (1,2,3,4,5).
+# What is the largest 1 to 9 pandigital 9-digit number that can be formed as the concatenated product of an integer with (1,2, ... , n) where n > 1?
+
+# Fixed number must contain less than 5 digits since n > 1
+# Number has to start with 9
+# If fixed number is 2 digit, we wont be able to generate 9 digits since n = 3 yields 8 digit number and n = 4 yields 11 digit number
+# Same goes for 3 digit number
+# Search limited to 9123 to 9876 i.e. 753 numbers
+# Now, if second digit > 4, a carry forward will happen when multiplied by 2, making 19xxx instead of 18xxx, i.e. 2 9s
+# None of the fixed number digits should be 1, because then 2 1s
+# New search limit: 9234 to 9487 i.e. 253 numbers
+def is_pandigital(i, j):
+	to_be_checked = set('123456789')
+	s = str(i) + str(j)
+	# print(s)
+	if len(s) == 9 and set(s) == to_be_checked:
+		return True
+	return False
+
+def pandigital_multiples():
+	start = time.time()
+	total = ''
+	for i in range(9387, 9234, -1):
+		# print(i, 2*i)
+		j = 2*i
+		if is_pandigital(i, j):
+			total = str(i) + str(j)
+			break
+
+	return total, time.time() - start
+
+p += 1
+result, total_time = pandigital_multiples()
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 39: Integer right triangles
+# If p is the perimeter of a right angle triangle with integral length sides, {a,b,c}, there are exactly three solutions for p = 120.
+# {20,48,52}, {24,45,51}, {30,40,50}
+# For which value of p ≤ 1000, is the number of solutions maximised?
+
+def right_triangles(n):
+	start = time.time()
+	max_l = []
+	max_p = 0
+	for p in range(n):
+		l = []
+		p_half = int(p/2)
+		a = c = 0
+		for b in range(1, p_half):
+			a = p*(p-2*b)/(2*(p-b))
+			if a.is_integer() and a > b:
+				# print(int(a), b)
+				c = sqrt(a**2 + b**2)
+				if c.is_integer():
+					l.append([int(a), b, int(c)])
+		if len(l) > len(max_l):
+			max_l = l
+			max_p = p
+
+	return max_p, time.time() - start 
+
+p += 1
+result, total_time = right_triangles(1001)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 40: Champernowne's constant
+# An irrational decimal fraction is created by concatenating the positive integers:
+# 0.123456789101112131415161718192021...
+# It can be seen that the 12th digit of the fractional part is 1.
+# If dn represents the nth digit of the fractional part, find the value of the following expression.
+# d1 × d10 × d100 × d1000 × d10000 × d100000 × d1000000
+
+def champernowne():
+	start = time.time()
+	str1 = ''
+	i = 1
+	while(len(str1) <= 1000000):
+		str1 += str(i)
+		if len(str1) <= 1000000:
+			str2 = str1
+		i += 1
+	total = int(str2[0])*int(str2[9])*int(str2[99])*int(str2[999])*int(str2[9999])*int(str2[99999]) 
+	return total, time.time() - start
+
+p += 1
+result, total_time = champernowne()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
