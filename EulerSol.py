@@ -1300,12 +1300,47 @@ def trunc_prime(n):
 	start = time.time()
 	prime_list = sieve_of_eratosthenes(n)
 	total = 0
-	for i in range(10, n):
-		str_num = i
+	
+	def trunc(num):
+		if num <= 0: return False
+		
+		len1 = 0
+		temp = num
+
+		while temp != 0:
+			len1 += 1
+			temp = temp // 10
+
+		# Right truncate
+		temp = num
+		while temp != 0:
+			if prime_list[temp] != True:
+				return False
+			temp = temp // 10
+
+		# Left truncate
+		temp = num
+		while len1 > 1:
+			y = temp % pow(10, len1 - 1)
+			if prime_list[y] != True:
+				return False
+			len1 -= 1
+
+		return True	
+	
+	numbers = 0
+	i = 8
+
+	while numbers < 11:
+		if trunc(i):
+			total += i
+			numbers += 1
+			print(i)
+		i += 1
 
 	return total, time.time() - start
 
 
 p += 1
-result, total_time = trunc_prime(3798)
+result, total_time = trunc_prime(1000000)
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
