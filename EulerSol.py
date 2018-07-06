@@ -1437,3 +1437,80 @@ def champernowne():
 p += 1
 result, total_time = champernowne()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 41: Pandigital prime
+# We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once. For example, 2143 is a 4-digit pandigital and is also prime.
+# What is the largest n-digit pandigital prime that exists?
+
+def is_pandigital41(n, s=9):
+	n = str(n)
+	return len(n) == s and not '1234567890'[:s].strip(n)
+
+def pandigital_prime(n):
+	start = time.time()
+	largest = 0
+	for i in range(n, 2143, -2):
+		if is_prime(i) and is_pandigital41(i, 7):
+			largest = i
+			break
+	return largest, time.time() - start
+	
+p += 1
+result, total_time = pandigital_prime(7654321)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 42: Coded triangle numbers
+# The nth term of the sequence of triangle numbers is given by, tn = ½n(n+1); so the first ten triangle numbers are:
+# 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...
+# By converting each letter in a word to a number corresponding to its alphabetical position and adding these values we form a word value. For example, the word value for SKY is 19 + 11 + 25 = 55 = t10. If the word value is a triangle number then we shall call the word a triangle word.
+# Using words.txt (right click and 'Save Link/Target As...'), a 16K text file containing nearly two-thousand common English words, how many are triangle words?
+
+def coded_tri_num(text):
+	start = time.time()
+	# l_value = {'a': 1,'b': 2,'c': 3,'d': 4,'e': 5,
+	# 				'f': 6,'g': 7,'h': 8,'i': 9,'j': 10,
+	# 				'k': 11,'l': 12,'m': 13,'n': 14,'o': 15,
+	# 				'p': 16,'q': 17,'r': 18,'s': 19,'t': 20,
+	# 				'u': 21,'v': 22,'w': 23,'x': 24,'y': 25,
+	# 				'z': 26}
+	total = 0
+	with open(text, "r") as f:
+		text_list = f.read().replace("\"", '').split(",")
+
+	for txt in text_list:
+		value = score(txt)
+		if ((-1 + sqrt(1 + 8*value))/2).is_integer():
+			total += 1
+	return total, time.time() - start
+
+p += 1
+result, total_time = coded_tri_num('p042_words.txt')
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 43: Sub-string divisibility
+# The number, 1406357289, is a 0 to 9 pandigital number because it is made up of each of the digits 0 to 9 in some order, but it also has a rather interesting sub-string divisibility property.
+# Let d1 be the 1st digit, d2 be the 2nd digit, and so on. In this way, we note the following:
+# d2d3d4=406 is divisible by 2
+# d3d4d5=063 is divisible by 3
+# d4d5d6=635 is divisible by 5
+# d5d6d7=357 is divisible by 7
+# d6d7d8=572 is divisible by 11
+# d7d8d9=728 is divisible by 13
+# d8d9d10=289 is divisible by 17
+# Find the sum of all 0 to 9 pandigital numbers with this property.
+
+def substr_divisbility(n):
+	start = time.time()
+	total = 0
+	for i in range(1023456789, n):
+		if is_pandigital41(i, 10):
+			if (int(str(i)[1] + str(i)[2] + str(i)[3]) % 2 == 0) and (int(str(i)[2] + str(i)[3] + str(i)[4]) % 3 == 0):
+				if (int(str(i)[3] + str(i)[4] + str(i)[5]) % 5 == 0) and (int(str(i)[4] + str(i)[5] + str(i)[6]) % 7 == 0):
+					if (int(str(i)[5] + str(i)[6] + str(i)[7]) % 11 == 0) and (int(str(i)[6] + str(i)[7] + str(i)[8]) % 13 == 0):
+						if (int(str(i)[7] + str(i)[8] + str(i)[9]) % 17 == 0):
+							total += i
+	return total, time.time() - start
+
+p += 1
+result, total_time = substr_divisbility(9876543210)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
