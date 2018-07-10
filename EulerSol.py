@@ -1688,15 +1688,14 @@ def prime_perm():
 			perm = itertools.permutations(temp)
 			for p in perm:
 				num = int(''.join(str(e) for e in p))
-				if is_prime(num) and num not in l:
+				if is_prime(num) and (num not in l) and (l[-1] - num == 3330):
 					l.append(num)
 
 		if len(l) == 3:
 			break
 		i += 2
 	
-	print(l)
-	return 1, time.time() - start
+	return l, time.time() - start
 
 p += 1
 result, total_time = prime_perm()
