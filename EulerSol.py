@@ -1700,3 +1700,39 @@ def prime_perm():
 p += 1
 result, total_time = prime_perm()
 print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
+
+# Problem 49: Consecutive prime sum
+# The prime 41, can be written as the sum of six consecutive primes:
+# 41 = 2 + 3 + 5 + 7 + 11 + 13
+# This is the longest sum of consecutive primes that adds to a prime below one-hundred.
+# The longest sum of consecutive primes below one-thousand that adds to a prime, contains 21 terms, and is equal to 953.
+# Which prime, below one-million, can be written as the sum of the most consecutive primes?
+
+def binary_search(arr, start, end, value):
+	mid = int(start + (end-start)/2)
+	if arr[mid] == value:
+		return mid
+	if arr[mid] > value:
+		return binary_search(arr, start, mid-1, value)
+	return binary_search(arr, mid+1, end, value)
+
+def consecutive_prime_sum(n):
+	start = time.time()
+	prime_list = sieve_of_eratosthenes(n)
+	primes = [i for i in range(len(prime_list)) if prime_list[i] == True]
+	max_len = -1
+	max_sum = -1
+	for i in range(len(primes)):
+		sum1 = 0
+		for j in range(i, len(primes)):
+			sum1 += primes[j]
+			if sum1 > 1000000:
+				break
+			if is_prime(sum1) and sum1 > max_sum and j-i > max_len:
+				max_len = j - i
+				max_sum = sum1 
+	return max_sum, time.time() - start
+
+p += 1
+result, total_time = consecutive_prime_sum(1000000)
+print ("Solution to Problem {} is {}, solved in {:.5f} seconds".format(p, result, total_time))
